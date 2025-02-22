@@ -47,6 +47,11 @@ const COLORS = {
       elevation: 5,
     },
   };
+
+const icons = {
+  appLogo: require("../assets/icons/1_logo.png"), // Pastikan path benar
+  settings: require("../assets/icons/settings.png"), // Pastikan path benar
+};
   
-  export { COLORS, FONT, SIZES, SHADOWS };
+  export { COLORS, FONT, SIZES, SHADOWS,icons  };
   
