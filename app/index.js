@@ -1,33 +1,34 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Redirect } from "expo-router";
-import { useEffect, useState } from "react";
-import { ActivityIndicator, View } from "react-native-web";
+import { useEffect, useState, useCallback } from "react";
+import { ActivityIndicator, View } from "react-native";
 
 export default function Index() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-        const checkLoginState = async () => {
-          try {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const checkLoginState = useCallback(async () => {
+        try {
             const user = await AsyncStorage.getItem("userDetails");
-            if (user) {
-              setIsLoggedIn(true);
-            }
-          } catch (error) {
+            setIsLoggedIn(!!user); // Jika user ada, maka true, jika tidak, false
+        } catch (error) {
             console.error("Error checking login state:", error);
-          }
-          setIsLoading(false);
-        };
-    
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
         checkLoginState();
-      }, []);
-      if (isLoading) {
-            return (
-              <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <ActivityIndicator size="large" />
-              </View>
-            );
-          }
-    
-  return <Redirect href={isLoggedIn ? "/home" : "/login"} />;
+    }, [checkLoginState]);
+
+    if (isLoading) {
+        return (
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <ActivityIndicator size="large" color="#6200EE" />
+            </View>
+        );
+    }
+
+    return <Redirect href={isLoggedIn ? "/home" : "/login"} />;
 }
