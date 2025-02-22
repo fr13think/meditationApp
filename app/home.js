@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { COLORS, SIZES, icons } from "../constants/theme";
 import ScreenHeaderBtn from "../components/ScreenHeaderBtn";
 import Welcome from "../components/Welcome";
+import DailyQuote from "../components/DailyQuote";
 import PopularMeditation from "../components/PopularMeditation";
 import DailyMeditation from "../components/DailyMeditation";
 
@@ -36,6 +37,7 @@ const Home = () => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ flex: 1, padding: SIZES.medium }} testID="screensDisplay">
                     <Welcome userDetails={userDetails} />
+                    <DailyQuote />
                     <PopularMeditation />
                     <DailyMeditation />
                 </View>
