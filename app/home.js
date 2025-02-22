@@ -4,12 +4,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { COLORS, SIZES, icons } from "../constants/theme";
 import ScreenHeaderBtn from "../components/ScreenHeaderBtn";
 import Welcome from "../components/Welcome";
-import DailyQuote from "../components/DailyQuote";
+import DailyQuote from "../components/DailyQuote";  // Menambahkan komponen DailyQuote
 import PopularMeditation from "../components/PopularMeditation";
 import DailyMeditation from "../components/DailyMeditation";
+import { useRouter } from "expo-router"; // Import router untuk navigasi
 
 const Home = () => {
     const [userDetails, setUserDetails] = useState(null);
+    const router = useRouter(); // Menggunakan router
 
     const loadUserDetails = useCallback(async () => {
         try {
@@ -30,14 +32,15 @@ const Home = () => {
             {/* App Bar */}
             <View style={{ flexDirection: "row", justifyContent: "space-between", padding: SIZES.medium }}>
                 <ScreenHeaderBtn iconUrl={icons?.appLogo} handlePress={() => console.log("Logo Pressed")} />
-                <ScreenHeaderBtn iconUrl={icons?.settings} handlePress={() => console.log("Settings Pressed")} />
+                {/* Tambahkan navigasi ke Settings */}
+                <ScreenHeaderBtn iconUrl={icons?.settings} handlePress={() => router.push("/settings")} />
             </View>
 
             {/* Main Content */}
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ flex: 1, padding: SIZES.medium }} testID="screensDisplay">
                     <Welcome userDetails={userDetails} />
-                    <DailyQuote />
+                    <DailyQuote />  {/* Tambahkan Daily Quote */}
                     <PopularMeditation />
                     <DailyMeditation />
                 </View>

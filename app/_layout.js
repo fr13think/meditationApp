@@ -12,6 +12,11 @@ import { Stack } from "expo-router";
 
 export default function Layout() {
     return (
-        <Stack screenOptions={{ headerShown: false }} />
+        <Stack>
+            <Stack.Screen name="index" options={{ title: "Home" }} />
+            <Stack.Screen name="settings" options={{ title: "Settings" }} />
+            <Stack.Screen name="favorites" options={{ title: "My Favorites" }} />
+        </Stack>
     );
 }
+
