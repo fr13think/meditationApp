@@ -105,25 +105,35 @@ const MeditationDetails = ({ route }) => {
     }, [navigation, isFavorite]);
 
     return (
-        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <Text style={{ fontSize: 22, fontWeight: "bold" }}>{title}</Text>
-            <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-            <Text style={{ marginTop: 10 }}>Durasi: {duration}</Text>
+        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
+            {/* App Bar */}
+            <View style={{ flexDirection: "row", justifyContent: "space-between", padding: SIZES.medium }}>
+                <ScreenHeaderBtn iconUrl={icons?.appLogo} handlePress={() => console.log("Logo Pressed")} />
+                {/* Tambahkan navigasi ke Settings */}
+                <ScreenHeaderBtn iconUrl={icons?.settings} handlePress={() => route.push("/settings")} />
+            </View>
 
-            <TouchableOpacity
-                onPress={addFavorite} // Panggil fungsi ini
-                style={{
-                    backgroundColor: isFavorite ? "gray" : "blue",
-                    padding: 10,
-                    borderRadius: 5,
-                    marginTop: 20,
-                }}
-            >
-                <Text style={{ color: "white" }}>
-                    {isFavorite ? "Favorited" : "Add to Favorites"}
-                </Text>
-            </TouchableOpacity>
-        </View>
+            {/* Main Content */}
+            <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                <Text style={{ fontSize: 22, fontWeight: "bold" }}>{title}</Text>
+                <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+                <Text style={{ marginTop: 10 }}>Durasi: {duration}</Text>
+
+                <TouchableOpacity
+                    onPress={addFavorite}
+                    style={{
+                        backgroundColor: isFavorite ? "gray" : "blue",
+                        padding: 10,
+                        borderRadius: 5,
+                        marginTop: 20,
+                    }}
+                >
+                    <Text style={{ color: "white" }}>
+                        {isFavorite ? "Favorited" : "Add to Favorites"}
+                    </Text>
+                </TouchableOpacity>
+            </View>
+        </SafeAreaView>
     );
 };
 

@@ -28,6 +28,12 @@ const Settings = () => {
             icon: icons.clock,
             route: "DailyReminders",
         },
+        {
+            id: 4,
+            title: "Profile",
+            icon: icons.share,
+            route: "Profile",
+        },
     ];
 
     const loadUserDetails = async () => {
@@ -46,7 +52,9 @@ const Settings = () => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
-            <ScreenHeaderBtn />
+            {/* App Bar */}
+            <ScreenHeaderBtn isAppBar={true} title="Meditation Details" />
+            
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ flex: 1, padding: SIZES.medium }}>
                     <View style={{ width: "100%" }} testID="userDetails">
@@ -73,7 +81,8 @@ const Settings = () => {
                                 shadowColor: COLORS.white,
                                 marginVertical: SIZES.small,
                             }}
-                            onPress={() => router.push(setting.route === "Favourites" ? "/favorites" : `/settings/${setting.route}`)} // FIXED ROUTE
+                            onPress={() => router.push(setting.route === "Favourites" ? "/favorites" : `/settings/${setting.route.toLowerCase()}`)}
+                        // FIXED ROUTE
                         >
                             <Image source={setting.icon} style={{ width: 24, height: 24, marginRight: 10 }} />
                             <Text style={{ fontSize: SIZES.medium, fontFamily: "DMBold", color: COLORS.primary }}>

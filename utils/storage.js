@@ -62,3 +62,32 @@ export const getNotifications = async () => {
         console.error('Error fetching notifications:', error);
     }
 };
+
+// Save user details
+export const saveUserDetails = async (userDetails) => {
+    try {
+        await AsyncStorage.setItem('userDetails', JSON.stringify(userDetails));
+    } catch (error) {
+        console.error('Error saving user details:', error);
+    }
+};
+
+// Retrieve user details
+export const getUserDetails = async () => {
+    try {
+        const userDetails = await AsyncStorage.getItem('userDetails');
+        return userDetails ? JSON.parse(userDetails) : null;
+    } catch (error) {
+        console.error('Error fetching user details:', error);
+    }
+};
+
+// Remove user details (for logout)
+export const removeUserDetails = async () => {
+    try {
+        await AsyncStorage.removeItem('userDetails');
+    } catch (error) {
+        console.error('Error removing user details:', error);
+    }
+};
+

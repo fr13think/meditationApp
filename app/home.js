@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { SafeAreaView, ScrollView, View } from "react-native";
+import { SafeAreaView, ScrollView, View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { COLORS, SIZES, icons } from "../constants/theme";
-import ScreenHeaderBtn from "../components/ScreenHeaderBtn";
 import Welcome from "../components/Welcome";
 import DailyQuote from "../components/DailyQuote";  // Menambahkan komponen DailyQuote
 import PopularMeditation from "../components/PopularMeditation";
@@ -30,10 +29,16 @@ const Home = () => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
             {/* App Bar */}
-            <View style={{ flexDirection: "row", justifyContent: "space-between", padding: SIZES.medium }}>
-                <ScreenHeaderBtn iconUrl={icons?.appLogo} handlePress={() => console.log("Logo Pressed")} />
-                {/* Tambahkan navigasi ke Settings */}
-                <ScreenHeaderBtn iconUrl={icons?.settings} handlePress={() => router.push("/settings")} />
+            <View style={styles.appBar}>
+                {/* Logo */}
+                <View style={styles.titleContainer}>
+                    <Image source={icons.appLogo} style={styles.logo} />
+                </View>
+
+                {/* Tombol Settings */}
+                <TouchableOpacity style={styles.btnContainer} onPress={() => router.push("/settings")}>
+                    <Image source={icons.settings} style={styles.image} />
+                </TouchableOpacity>
             </View>
 
             {/* Main Content */}
@@ -48,5 +53,39 @@ const Home = () => {
         </SafeAreaView>
     );
 };
+
+
+const styles = StyleSheet.create({
+    appBar: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        backgroundColor: COLORS.white,
+        paddingVertical: 10,
+        paddingHorizontal: SIZES.medium,
+        elevation: 3, // Memberikan efek bayangan untuk tampilan lebih bagus
+    },
+    btnContainer: {
+        padding: 10,
+        borderRadius: 8,
+        backgroundColor: "transparent",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    image: {
+        width: 24,
+        height: 24,
+        tintColor: COLORS.primary, // Warna ikon
+    },
+    logo: {
+        width: 100,
+        height: 30,
+        resizeMode: "contain",
+    },
+    titleContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+});
 
 export default Home;

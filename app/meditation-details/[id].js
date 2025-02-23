@@ -1,4 +1,4 @@
-import { Stack, useGlobalSearchParams } from "expo-router";
+import { Stack, useGlobalSearchParams, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import {
     View,
@@ -10,6 +10,7 @@ import {
     Share,
     Alert,
     StyleSheet,
+    Image
 } from "react-native";
 import { MeditationTopDisplay, About, Footer, Tabs } from "../../components";
 import ScreenHeaderBtn from "../../components/ScreenHeaderBtn";
@@ -20,6 +21,7 @@ const tabs = ["About", "Instructions"];
 
 const MeditationDetails = () => {
     const params = useGlobalSearchParams();
+    const router = useRouter();
     const id = params.id;
     const { data, isLoading, error, refetch } = useFetch("search", {
         query: id,
@@ -71,8 +73,10 @@ const MeditationDetails = () => {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <ScreenHeaderBtn detailPage={true} handleShare={onShare} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
+            {/* App Bar */}
+            <ScreenHeaderBtn isAppBar={true} title="Meditation Details" />
+
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
