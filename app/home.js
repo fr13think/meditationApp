@@ -7,6 +7,7 @@ import DailyQuote from "../components/DailyQuote";  // Menambahkan komponen Dail
 import PopularMeditation from "../components/PopularMeditation";
 import DailyMeditation from "../components/DailyMeditation";
 import { useRouter } from "expo-router"; // Import router untuk navigasi
+import { useTheme } from "../context/ThemeContext";
 
 const Home = () => {
     const [userDetails, setUserDetails] = useState(null);

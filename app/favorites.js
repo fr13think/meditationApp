@@ -4,7 +4,8 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect, useRouter } from "expo-router";
-import { SIZES, COLORS, FONT, SHADOWS } from "../constants"; // Pastikan konstanta tersedia
+import { SIZES, COLORS, FONT, SHADOWS } from "../constants";
+import ScreenHeaderBtn from "../components/ScreenHeaderBtn";
 
 const Favorites = () => {
     const [favorites, setFavorites] = useState([]);
@@ -50,7 +51,8 @@ const Favorites = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.headerTitle}>Your Favorites</Text>
+            {/* App Bar */}
+            <ScreenHeaderBtn isAppBar={true} title="My Favorites" />
 
             {favorites.length === 0 ? (
                 <Text style={styles.emptyText}>No Favorites Item Found</Text>
