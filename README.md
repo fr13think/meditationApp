@@ -1,7 +1,9 @@
 # meditationApp
 
+## Deployment URL  https://meditationapp--ujia2dbfbh.expo.app
+
 ## MeditationApp User Stories
-https://github.com/shkhoos97/meditationApp
+
 ## User Story 1: User Registration
 ### Title:
 As a **new user**, I want to **register an account** so that **I can access personalized meditation sessions**.
@@ -120,3 +122,5 @@ As a **user**, I want to **use the app in dark mode** so that **I can reduce eye
 
 ### Story Points:
 **2**
+
+https://github.com/shkhoos97/meditationApp
