@@ -7,7 +7,8 @@ import {
     TextInput,
     Text,
     TouchableOpacity,
-    ActivityIndicator
+    ActivityIndicator,
+    StyleSheet
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack, useRouter } from "expo-router";
@@ -18,6 +19,7 @@ const SignUp = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState({});
     const router = useRouter();
 
     const validateEmail = (email) => {
@@ -25,16 +27,23 @@ const SignUp = () => {
     };
 
     const handleRegister = async () => {
-        if (!userName || !email || !password) {
-            Alert.alert("Validation Error", "Please fill in all fields.");
-            return;
+        let validationErrors = {};
+        if (!userName) {
+            validationErrors.userName = "Please enter your username.";
         }
-        if (!validateEmail(email)) {
-            Alert.alert("Validation Error", "Please enter a valid email address.");
-            return;
+        if (!email) {
+            validationErrors.email = "Please enter your email.";
+        } else if (!validateEmail(email)) {
+            validationErrors.email = "Please enter a valid email address.";
         }
-        if (password.length < 6) {
-            Alert.alert("Validation Error", "Password must be at least 6 characters.");
+        if (!password) {
+            validationErrors.password = "Please enter your password.";
+        } else if (password.length < 6) {
+            validationErrors.password = "Password must be at least 6 characters.";
+        }
+
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
             return;
         }
 
@@ -81,54 +90,43 @@ const SignUp = () => {
                 <View style={{ marginTop: 30 }} testID="formData">
                     <View style={{ marginBottom: 10 }} testID="userName">
                         <TextInput
-                            style={{
-                                borderColor: "#ccc",
-                                borderWidth: 1,
-                                padding: 10,
-                                borderRadius: 5,
-                                marginBottom: 10,
-                            }}
+                            style={[
+                                styles.input,
+                                errors.userName && { borderColor: "red" }
+                            ]}
                             value={userName}
                             onChangeText={setUserName}
                             placeholder="UserName"
                         />
+                        {errors.userName && <Text style={styles.errorText}>{errors.userName}</Text>}
                     </View>
                     <View style={{ marginBottom: 10 }} testID="email">
                         <TextInput
-                            style={{
-                                borderColor: "#ccc",
-                                borderWidth: 1,
-                                padding: 10,
-                                borderRadius: 5,
-                                marginBottom: 10,
-                            }}
+                            style={[
+                                styles.input,
+                                errors.email && { borderColor: "red" }
+                            ]}
                             value={email}
                             onChangeText={setEmail}
                             placeholder="Email"
                         />
+                        {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
                     </View>
                     <View style={{ marginBottom: 20 }} testID="password">
                         <TextInput
-                            style={{
-                                borderColor: "#ccc",
-                                borderWidth: 1,
-                                padding: 10,
-                                borderRadius: 5,
-                            }}
+                            style={[
+                                styles.input,
+                                errors.password && { borderColor: "red" }
+                            ]}
                             value={password}
                             onChangeText={setPassword}
                             secureTextEntry={true}
                             placeholder="Password"
                         />
+                        {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
                     </View>
                     <TouchableOpacity
-                        style={{
-                            backgroundColor: COLORS.primary,
-                            padding: 15,
-                            borderRadius: 5,
-                            alignItems: "center",
-                            marginBottom: 10,
-                        }}
+                        style={styles.button}
                         onPress={handleRegister}
                         disabled={loading}
                         testID="handleRegister"
@@ -136,17 +134,12 @@ const SignUp = () => {
                         {loading ? (
                             <ActivityIndicator color="#fff" />
                         ) : (
-                            <Text style={{ color: "#fff", fontWeight: "bold" }}>Sign Up</Text>
+                            <Text style={styles.buttonText}>Sign Up</Text>
                         )}
                     </TouchableOpacity>
                 </View>
                 <View
-                    style={{
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: 5,
-                    }}
+                    style={styles.loginContainer}
                     testID="textData"
                 >
                     <Text style={{ marginRight: 5 }}>Already have an account?</Text>
@@ -158,5 +151,38 @@ const SignUp = () => {
         </SafeAreaView>
     );
 };
+
+const styles = StyleSheet.create({
+    input: {
+        borderColor: "#ccc",
+        borderWidth: 1,
+        padding: 10,
+        borderRadius: 5,
+        marginBottom: 10,
+    },
+    errorText: {
+        color: "red",
+        fontSize: 12,
+        marginTop: -10,
+        marginBottom: 10,
+    },
+    button: {
+        backgroundColor: COLORS.primary,
+        padding: 15,
+        borderRadius: 5,
+        alignItems: "center",
+        marginBottom: 10,
+    },
+    buttonText: {
+        color: "#fff",
+        fontWeight: "bold",
+    },
+    loginContainer: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 5,
+    },
+});
 
 export default SignUp;

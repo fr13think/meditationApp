@@ -6,7 +6,8 @@ import {
   Alert,
   Text,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  StyleSheet
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack, useRouter } from "expo-router";
@@ -15,6 +16,7 @@ import { COLORS, icons, SHADOWS } from "../constants";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
   const router = useRouter();
 
   useEffect(() => {
@@ -32,10 +34,19 @@ const Login = () => {
   }, []);
 
   const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert("Validation Error", "Please fill in all fields.");
+    let validationErrors = {};
+    if (!email) {
+      validationErrors.email = "Please enter your email.";
+    }
+    if (!password) {
+      validationErrors.password = "Please enter your password.";
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
+
     try {
       const storedUser = await AsyncStorage.getItem("userDetails");
       if (storedUser) {
@@ -85,50 +96,36 @@ const Login = () => {
         <View style={{ marginTop: 20 }}>
           <View style={{ marginBottom: 20 }}>
             <TextInput
-              style={{
-                borderWidth: 1,
-                borderColor: "#ccc",
-                padding: 10,
-                borderRadius: 5,
-                marginBottom: 10,
-              }}
+              style={[
+                styles.input,
+                errors.email && { borderColor: "red" }
+              ]}
               value={email}
               onChangeText={setEmail}
               placeholder="Email"
             />
+            {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
             <TextInput
-              style={{
-                borderWidth: 1,
-                borderColor: "#ccc",
-                padding: 10,
-                borderRadius: 5,
-                marginBottom: 10,
-              }}
+              style={[
+                styles.input,
+                errors.password && { borderColor: "red" }
+              ]}
               value={password}
               secureTextEntry={true}
               onChangeText={setPassword}
               placeholder="Password"
             />
+            {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
           </View>
           <TouchableOpacity
-            style={{
-              backgroundColor: COLORS.primary,
-              padding: 15,
-              borderRadius: 5,
-              alignItems: "center",
-            }}
+            style={styles.button}
             onPress={handleLogin}
           >
-            <Text style={{ color: "#fff", fontWeight: "bold" }}>Login</Text>
+            <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
         </View>
         <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: 10,
-          }}
+          style={styles.signupContainer}
         >
           <Text style={{ marginRight: 5 }}>Don't have an account?</Text>
           <TouchableOpacity onPress={() => router.push("/signup")}>
@@ -139,5 +136,38 @@ const Login = () => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginTop: -10,
+    marginBottom: 10,
+  },
+  button: {
+    backgroundColor: COLORS.primary,
+    padding: 15,
+    borderRadius: 5,
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  signupContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 5,
+  },
+});
 
 export default Login;
