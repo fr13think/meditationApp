@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { 
-  View, 
-  SafeAreaView, 
-  Image, 
-  Alert, 
-  Text, 
-  TextInput, 
-  TouchableOpacity 
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  SafeAreaView,
+  Image,
+  Alert,
+  Text,
+  TextInput,
+  TouchableOpacity
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack, useRouter } from "expo-router";
@@ -16,6 +16,20 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+
+  useEffect(() => {
+    // Add dummy user data to AsyncStorage for testing
+    const addDummyData = async () => {
+      const dummyUser = {
+        userName: "yudhae",
+        email: "yudhae@mail.com",
+        password: "123123",
+        token: "sample-token"
+      };
+      await AsyncStorage.setItem("userDetails", JSON.stringify(dummyUser));
+    };
+    addDummyData();
+  }, []);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -36,6 +50,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error("Error accessing AsyncStorage", error);
+      Alert.alert("Error", "An error occurred while logging in.");
     }
   };
 

@@ -15,10 +15,10 @@ const ScreenHeaderBtn = ({ isAppBar = false, title }) => {
                 </TouchableOpacity>
 
                 {/* Logo */}
-                <View style={styles.titleContainer}>
+                <TouchableOpacity style={styles.titleContainer} onPress={() => router.push("/home")}>
                     <Image source={icons.logo} style={styles.logo} />
                     {title && <Text style={styles.title}>{title}</Text>}
-                </View>
+                </TouchableOpacity>
 
                 {/* Tombol Settings */}
                 <TouchableOpacity style={styles.btnContainer} onPress={() => router.push("/settings")}>

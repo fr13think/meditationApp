@@ -40,10 +40,16 @@ const SignUp = () => {
 
         setLoading(true);
         const userDetails = { userName, email, password, token: "sample-token" };
-        await AsyncStorage.setItem("userDetails", JSON.stringify(userDetails));
-        setLoading(false);
-        console.log("User registered:", userDetails);
-        router.push("/home");
+        try {
+            await AsyncStorage.setItem("userDetails", JSON.stringify(userDetails));
+            setLoading(false);
+            console.log("User registered:", userDetails);
+            router.push("/home");
+        } catch (error) {
+            setLoading(false);
+            console.error("Error saving user details", error);
+            Alert.alert("Error", "An error occurred while registering.");
+        }
     };
 
     return (

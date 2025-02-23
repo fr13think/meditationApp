@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, Button, SafeAreaView } from "react-native";
-import { COLORS, FONT, SIZES, icons } from "../../constants";
+import { COLORS, FONT, SIZES, icons } from "../constants";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import ScreenHeaderBtn from "../../components/ScreenHeaderBtn";
+import ScreenHeaderBtn from "../components/ScreenHeaderBtn";
 
 const Profile = () => {
     const [userDetails, setUserDetails] = useState(null);

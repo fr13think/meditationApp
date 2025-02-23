@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import { SafeAreaView, ScrollView, View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { COLORS, SIZES, icons } from "../constants/theme";
@@ -7,11 +7,12 @@ import DailyQuote from "../components/DailyQuote";  // Menambahkan komponen Dail
 import PopularMeditation from "../components/PopularMeditation";
 import DailyMeditation from "../components/DailyMeditation";
 import { useRouter } from "expo-router"; // Import router untuk navigasi
-import { useTheme } from "../context/ThemeContext";
+import { ThemeContext } from "../context/ThemeContext";
 
 const Home = () => {
     const [userDetails, setUserDetails] = useState(null);
     const router = useRouter(); // Menggunakan router
+    const { isDarkTheme } = useContext(ThemeContext);
 
     const loadUserDetails = useCallback(async () => {
         try {
@@ -28,9 +29,9 @@ const Home = () => {
     }, [loadUserDetails]);
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
+        <SafeAreaView style={[styles.container, { backgroundColor: isDarkTheme ? COLORS.dark : COLORS.lightWhite }]}>
             {/* App Bar */}
-            <View style={styles.appBar}>
+            <View style={[styles.appBar, { backgroundColor: isDarkTheme ? COLORS.darkGray : COLORS.white }]}>
                 {/* Logo */}
                 <View style={styles.titleContainer}>
                     <Image source={icons.appLogo} style={styles.logo} />
@@ -38,7 +39,7 @@ const Home = () => {
 
                 {/* Tombol Settings */}
                 <TouchableOpacity style={styles.btnContainer} onPress={() => router.push("/settings")}>
-                    <Image source={icons.settings} style={styles.image} />
+                    <Image source={icons.settings} style={[styles.image, { tintColor: isDarkTheme ? COLORS.lightWhite : COLORS.primary }]} />
                 </TouchableOpacity>
             </View>
 
@@ -55,13 +56,14 @@ const Home = () => {
     );
 };
 
-
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
     appBar: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        backgroundColor: COLORS.white,
         paddingVertical: 10,
         paddingHorizontal: SIZES.medium,
         elevation: 3, // Memberikan efek bayangan untuk tampilan lebih bagus
@@ -76,7 +78,6 @@ const styles = StyleSheet.create({
     image: {
         width: 24,
         height: 24,
-        tintColor: COLORS.primary, // Warna ikon
     },
     logo: {
         width: 100,
