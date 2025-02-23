@@ -8,8 +8,7 @@ As a **new user**, I want to **register an account** so that **I can access pers
 
 ### Acceptance Criteria:
 - Users can sign up using email and password.
-- Users can sign up using third-party authentication (Google, Apple).
-- Users receive a verification email upon registration.
+- After registration successfull direct to home page.
 
 ### Story Points:
 **3**
@@ -22,8 +21,7 @@ As a **registered user**, I want to **log into my account** so that **I can acce
 
 ### Acceptance Criteria:
 - Users can log in using email and password.
-- Users can log in using third-party authentication (Google, Apple).
-- Users see an error message if login credentials are incorrect.
+- Users see an error alert if login credentials are incorrect.
 
 ### Story Points:
 **2**
@@ -36,8 +34,6 @@ As a **user**, I want to **access guided meditation sessions** so that **I can p
 
 ### Acceptance Criteria:
 - Users can browse a list of available guided meditation sessions.
-- Users can select a session and play audio-guided meditation.
-- Users can pause, rewind, and forward meditation sessions.
 
 ### Story Points:
 **5**
@@ -58,13 +54,12 @@ As a **user**, I want to **track my meditation progress** so that **I can stay m
 
 ---
 
-## User Story 5: Personalized Meditation Recommendations
+## User Story 5: Personalized Meditation Favorites
 ### Title:
-As a **user**, I want to **receive personalized meditation recommendations** so that **I can find the most suitable sessions for my needs**.
+As a **user**, I want to **receive personalized meditation favorites** so that **I can find the most suitable sessions for my needs**.
 
 ### Acceptance Criteria:
 - Users can input their meditation goals (e.g., stress relief, better sleep).
-- The app suggests sessions based on past usage and preferences.
 - Users can save recommended sessions for later.
 
 ### Story Points:
@@ -100,21 +95,7 @@ As a **user**, I want to **set meditation reminders** so that **I can develop a 
 
 ---
 
-## User Story 8: Background Sounds
-### Title:
-As a **user**, I want to **play calming background sounds** so that **I can enhance my meditation experience**.
-
-### Acceptance Criteria:
-- Users can choose from a list of background sounds (e.g., rain, ocean, birds).
-- Users can adjust the volume of background sounds.
-- Background sounds play continuously during meditation sessions.
-
-### Story Points:
-**4**
-
----
-
-## User Story 9: Social Sharing
+## User Story 8: Social Sharing
 ### Title:
 As a **user**, I want to **share my meditation progress on social media** so that **I can motivate others and celebrate my achievements**.
 
@@ -128,7 +109,7 @@ As a **user**, I want to **share my meditation progress on social media** so tha
 
 ---
 
-## User Story 10: Dark Mode
+## User Story 9: Dark Mode
 ### Title:
 As a **user**, I want to **use the app in dark mode** so that **I can reduce eye strain in low-light environments**.
 
