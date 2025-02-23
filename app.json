@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "MeditationApp",
-    "slug": "MeditationApp",
+    "slug": "meditationapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,6 +22,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e8841f91-dc11-494a-b0a7-27f848899d17"
+      }
+    },
+    "owner": "masbrou"
   }
 }
