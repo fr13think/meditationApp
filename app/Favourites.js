@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import {
-    View, Text, FlatList, TouchableOpacity, Image, StyleSheet
+    View, Text, FlatList, TouchableOpacity, Image, StyleSheet, Modal, Button
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect, useRouter } from "expo-router";
+import { useFocusEffect } from "expo-router";
 import { SIZES, COLORS, FONT, SHADOWS } from "../constants";
 import ScreenHeaderBtn from "../components/ScreenHeaderBtn";
 
 const Favorites = () => {
     const [favorites, setFavorites] = useState([]);
-    const router = useRouter(); // Menggunakan router untuk navigasi
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
 
     // Load favorites dari AsyncStorage
     const loadFavorites = async () => {
@@ -49,6 +50,12 @@ const Favorites = () => {
         }, [])
     );
 
+    // Tampilkan detail item favorit
+    const showDetail = (item) => {
+        setSelectedItem(item);
+        setModalVisible(true);
+    };
+
     return (
         <View style={styles.container}>
             {/* App Bar */}
@@ -64,16 +71,7 @@ const Favorites = () => {
                     renderItem={({ item }) => (
                         <TouchableOpacity
                             style={styles.cardContainer}
-                            onPress={() => router.push({
-                                pathname: "/meditation-details",
-                                params: {
-                                    id: item.id,
-                                    title: item.title,
-                                    target: item.target,
-                                    duration: item.duration,
-                                    image: item.image,
-                                }
-                            })}
+                            onPress={() => showDetail(item)}
                         >
                             {/* Gambar */}
                             <View style={styles.logoContainer}>
@@ -99,6 +97,29 @@ const Favorites = () => {
                         </TouchableOpacity>
                     )}
                 />
+            )}
+
+            {/* Modal untuk menampilkan detail item favorit */}
+            {selectedItem && (
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible);
+                    }}
+                >
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalContent}>
+                            <Image source={{ uri: selectedItem.image }} style={styles.modalImage} />
+                            <Text style={styles.modalTitle}>{selectedItem.title}</Text>
+                            <Text style={styles.modalDescription}>{selectedItem.description}</Text>
+                            <Text style={styles.modalTarget}>Target: {selectedItem.target}</Text>
+                            <Text style={styles.modalDuration}>Duration: {selectedItem.duration}</Text>
+                            <Button title="Close" onPress={() => setModalVisible(false)} />
+                        </View>
+                    </View>
+                </Modal>
             )}
         </View>
     );
@@ -170,6 +191,56 @@ const styles = StyleSheet.create({
         fontSize: SIZES.small,
         fontFamily: FONT.regular,
         color: COLORS.darkGray,
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0,0,0,0.5)",
+    },
+    modalContent: {
+        width: "80%",
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 20,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    modalImage: {
+        width: "100%",
+        height: 200,
+        borderRadius: SIZES.medium,
+        marginBottom: SIZES.medium,
+    },
+    modalTitle: {
+        fontSize: SIZES.xLarge,
+        fontFamily: FONT.bold,
+        color: COLORS.primary,
+        marginBottom: SIZES.small,
+    },
+    modalDescription: {
+        fontSize: SIZES.medium,
+        fontFamily: FONT.regular,
+        color: COLORS.secondary,
+        marginBottom: SIZES.small,
+    },
+    modalTarget: {
+        fontSize: SIZES.medium,
+        fontFamily: FONT.regular,
+        color: COLORS.secondary,
+        marginBottom: SIZES.small,
+    },
+    modalDuration: {
+        fontSize: SIZES.medium,
+        fontFamily: FONT.regular,
+        color: COLORS.secondary,
     },
 });
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, Button, SafeAreaView } from "react-native";
-import { COLORS, FONT, SIZES, icons } from "../constants";
+import { COLORS, FONT, SIZES } from "../constants";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ScreenHeaderBtn from "../components/ScreenHeaderBtn";
@@ -28,6 +28,10 @@ const Profile = () => {
         const updatedUser = { ...userDetails, userName: newName };
         await AsyncStorage.setItem("userDetails", JSON.stringify(updatedUser));
         setUserDetails(updatedUser);
+        router.push({
+            pathname: "/home",
+            params: { refresh: true }
+        });
     };
 
     return (

@@ -12,6 +12,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack, useRouter } from "expo-router";
 import { COLORS, icons, SHADOWS } from "../constants";
+import bcrypt from "bcryptjs"; // Library untuk hashing password
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -19,39 +20,41 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const router = useRouter();
 
-  useEffect(() => {
-    // Add dummy user data to AsyncStorage for testing
-    const addDummyData = async () => {
-      const dummyUser = {
-        userName: "yudhae",
-        email: "yudhae@mail.com",
-        password: "123123",
-        token: "sample-token"
-      };
-      await AsyncStorage.setItem("userDetails", JSON.stringify(dummyUser));
-    };
-    addDummyData();
-  }, []);
+  // Fungsi untuk validasi email
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
 
+  // Fungsi untuk handle login
   const handleLogin = async () => {
     let validationErrors = {};
     if (!email) {
       validationErrors.email = "Please enter your email.";
+    } else if (!validateEmail(email)) {
+      validationErrors.email = "Please enter a valid email address.";
     }
     if (!password) {
       validationErrors.password = "Please enter your password.";
     }
 
+    // Jika ada error validasi, tampilkan error dan berhenti
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
     try {
+      // Ambil data user dari AsyncStorage
       const storedUser = await AsyncStorage.getItem("userDetails");
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
-        if (email === parsedUser.email && password === parsedUser.password) {
+
+        // Bandingkan email dan password
+        const passwordMatch = await bcrypt.compare(password, parsedUser.password);
+        if (email === parsedUser.email && passwordMatch) {
+          // Jika kredensial valid, navigasi ke home
+          await AsyncStorage.setItem("isLoggedIn", "true");
           router.push("/home");
         } else {
           Alert.alert("Error", "Incorrect email or password.");
@@ -64,6 +67,16 @@ const Login = () => {
       Alert.alert("Error", "An error occurred while logging in.");
     }
   };
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
+      if (isLoggedIn === "true") {
+        router.push("/home");
+      }
+    };
+    checkLoginStatus();
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
@@ -96,37 +109,30 @@ const Login = () => {
         <View style={{ marginTop: 20 }}>
           <View style={{ marginBottom: 20 }}>
             <TextInput
-              style={[
-                styles.input,
-                errors.email && { borderColor: "red" }
-              ]}
+              style={[styles.input, errors.email && { borderColor: "red" }]}
               value={email}
               onChangeText={setEmail}
               placeholder="Email"
+              keyboardType="email-address"
+              autoCapitalize="none"
             />
             {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
             <TextInput
-              style={[
-                styles.input,
-                errors.password && { borderColor: "red" }
-              ]}
+              style={[styles.input, errors.password && { borderColor: "red" }]}
               value={password}
               secureTextEntry={true}
               onChangeText={setPassword}
               placeholder="Password"
             />
-            {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
+            {errors.password && (
+              <Text style={styles.errorText}>{errors.password}</Text>
+            )}
           </View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleLogin}
-          >
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
         </View>
-        <View
-          style={styles.signupContainer}
-        >
+        <View style={styles.signupContainer}>
           <Text style={{ marginRight: 5 }}>Don't have an account?</Text>
           <TouchableOpacity onPress={() => router.push("/signup")}>
             <Text style={{ color: "blue" }}>Sign Up</Text>

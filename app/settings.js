@@ -48,15 +48,19 @@ const Settings = () => {
   }, []);
 
   const handleLogout = async () => {
-    await AsyncStorage.removeItem("userDetails");
-    router.push("/login");
+    try {
+      await AsyncStorage.removeItem("isLoggedIn");
+      router.replace("/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: isDarkTheme ? COLORS.dark : COLORS.lightWhite }}>
       {/* App Bar */}
       <ScreenHeaderBtn isAppBar={true} title="Meditation Details" />
-      
+
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, padding: SIZES.medium }}>
           <View style={{ width: "100%" }} testID="userDetails">

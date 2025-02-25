@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useContext } from "react";
-import { SafeAreaView, ScrollView, View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { SafeAreaView, ScrollView, View, StyleSheet, TouchableOpacity, Image, Button } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { COLORS, SIZES, icons } from "../constants/theme";
 import Welcome from "../components/Welcome";
@@ -25,8 +25,25 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-        loadUserDetails();
+        const checkLoginStatus = async () => {
+            const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
+            if (isLoggedIn !== "true") {
+                router.push("/login");
+            } else {
+                loadUserDetails();
+            }
+        };
+        checkLoginStatus();
     }, [loadUserDetails]);
+
+    const handleLogout = async () => {
+        try {
+            await AsyncStorage.removeItem("isLoggedIn");
+            router.replace("/login");
+        } catch (error) {
+            console.error("Error logging out:", error);
+        }
+    };
 
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: isDarkTheme ? COLORS.dark : COLORS.lightWhite }]}>
@@ -50,6 +67,7 @@ const Home = () => {
                     <DailyQuote />  {/* Tambahkan Daily Quote */}
                     <PopularMeditation />
                     <DailyMeditation />
+                    <Button title="Logout" onPress={handleLogout} />
                 </View>
             </ScrollView>
         </SafeAreaView>

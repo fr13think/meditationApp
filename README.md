@@ -1,7 +1,9 @@
 # meditationApp
 
 ## MeditationApp User Stories
+https://meditationapp--ujia2dbfbh.expo.app  
 https://github.com/shkhoos97/meditationApp
+
 ## User Story 1: User Registration
 ### Title:
 As a **new user**, I want to **register an account** so that **I can access personalized meditation sessions**.
