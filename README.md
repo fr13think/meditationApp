@@ -1,8 +1,13 @@
 # meditationApp
 
+## Deployment URL  https://meditationapp--ujia2dbfbh.expo.app
+
 ## MeditationApp User Stories
+<<<<<<< HEAD
 https://meditationapp--ujia2dbfbh.expo.app  
 https://github.com/shkhoos97/meditationApp
+=======
+>>>>>>> 09ee024ce1e26036e4902c943df100f07d85aec6
 
 ## User Story 1: User Registration
 ### Title:
@@ -122,3 +127,5 @@ As a **user**, I want to **use the app in dark mode** so that **I can reduce eye
 
 ### Story Points:
 **2**
+
+https://github.com/shkhoos97/meditationApp
