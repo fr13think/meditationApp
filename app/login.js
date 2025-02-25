@@ -88,7 +88,7 @@ const Login = () => {
           headerTitle: "",
         }}
       />
-      <View style={{ padding: 20 }}>
+      <View style={{ padding: 20, flex: 1 }}>
         <View
           style={{
             padding: 20,
@@ -138,6 +138,9 @@ const Login = () => {
             <Text style={{ color: "blue" }}>Sign Up</Text>
           </TouchableOpacity>
         </View>
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>MeditationApp by YudhaE Version 1.0.0</Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -173,6 +176,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 5,
+  },
+  footer: {
+    marginTop: 'auto',
+    alignItems: 'center',
+    padding: 10,
+  },
+  footerText: {
+    color: COLORS.gray,
+    fontSize: 12,
   },
 });
 
